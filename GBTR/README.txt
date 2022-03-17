@@ -6,3 +6,5 @@ Technicall steps:
 2) Convert categorical columns with OneHotEncoder into vectors
 3) Run GBTR model
 4) Create table and chart with results
+
+Worth to mention is also that the results are kind of bad due to bad quality of data, waiting for additional cols...
