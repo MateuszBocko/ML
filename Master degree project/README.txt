@@ -1,4 +1,4 @@
-Master degree project
+Master degree project (WIG20 Analysis)
 
 The aim of this project was:
 1) Check which companies are currently in Wig20
