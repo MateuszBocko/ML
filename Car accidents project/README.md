@@ -13,4 +13,4 @@ Modelling the data (choosed model - Gradient Boosted Tree Regression):
 4) Round the results as we need values equal to: 1/2/3/4
 5) Check the accuracy and create summarizing chart
 
-The model allows the user to predict the severity with ~95% accuracy.
+The model allows the user to predict the severity of the accident with ~95% accuracy.
