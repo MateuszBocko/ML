@@ -2,8 +2,10 @@
 
 The purpose of this project is to analyse the data and predict the severity of the accident.
 
-First step is to analize the data around the ++severity++ (check which is most often, which weather conditions are crucial for each severity type etc.). After cleaning the data set its important to check which variables are usefull for the project and drop the rest.
+First step is to analize the data around the **severity** (check which is most often, which weather conditions are crucial for each severity type etc.). After cleaning the data set its important to check which variables are usefull for the project and drop the rest.
+
 After that we need to prepare the data: remove null values in some rows or replace them with 0, change the data type in some columns. When it is done there is last step in preparing the data, columns that are categorical we need to convert to vectors with OneHotEncoder.
+
 As there are no more categorical column we can create one vector that contains all the data for each row and call that column 'features'.
 
 Modelling the data (choosed model - **Gradient Boosted Tree Regression**):
