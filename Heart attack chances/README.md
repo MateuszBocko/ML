@@ -1,5 +1,4 @@
 # Heart Attack Analysis and Prediction
-Project preformed in cooperate with [Szymon Mazoń](https://github.com/MazonSzymon)
 
 [Tableau dashboard](https://public.tableau.com/app/profile/mateusz.bo.ko/viz/Heartattackchances/Dashboard1?publish=yes)
 
