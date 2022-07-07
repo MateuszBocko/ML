@@ -53,3 +53,8 @@ CREATE TABLE DataCoSupplyChainDataset(
     shipping_date_date_orders      VARCHAR(20),
     shipping_mode                  VARCHAR(15)
 );
+
+
+PSQL:
+Load data: 
+\copy datacosupplychaindataset FROM 'C:\Users\mateu\Desktop\AWS ML Project\DataCoSupplyChainDataset.csv' with (format csv,header true, delimiter ',');
