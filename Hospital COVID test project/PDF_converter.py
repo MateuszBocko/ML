@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
 import subprocess
 import sys
-
-print('PROCESS HAS BEEN STARTED!')
-
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-install('pandas')
-install('PyPDF2')
-install('openpyxl')
-install('tqdm')
-
-
 import os
 import re
 import openpyxl
@@ -22,6 +10,8 @@ import pathlib
 from itertools import chain
 from PyPDF2 import PdfReader
 import pandas as pd
+
+print('PROCESS HAS BEEN STARTED!')
 
 class PDF_converter():
     def __init__(self, path_to_pdf, list_of_laboratory_tests, static_cols):
