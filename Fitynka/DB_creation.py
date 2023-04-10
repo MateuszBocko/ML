@@ -5,6 +5,7 @@ import os
 class DatabaseCreation:
     def __init__(self):
         self.conn = None
+
     def create_db(self, db_file):
         """ create a database connection to the SQLite database
             specified by db_file
