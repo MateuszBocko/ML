@@ -1,10 +1,12 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QLabel, QGridLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QLabel, QGridLayout, QMessageBox
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import *
-from cryptography.fernet import Fernet
-from DB.db_operations import DatabaseOperations, encrypt
+from encrypting import is_correct_password
+from db_operations import DatabaseOperations
+from config import logo
+logo()
 
 class MainWindow(QWidget):
     def __init__(self, *args, **kwargs):
@@ -36,7 +38,7 @@ class MainWindow(QWidget):
         # username
         self.username = QLabel('Login:')
         self.username.setFont(QFont('Boulder', 10))
-        self.username.setStyleSheet("border :0px ;")
+        self.username.setStyleSheet("border :0px; font-weight: bold")
         layout.addWidget(self.username, 0, 0)
 
         self.username_input = QLineEdit()
@@ -47,7 +49,7 @@ class MainWindow(QWidget):
         # password
         self.password = QLabel('Hasło:')
         self.password.setFont(QFont('Boulder', 10))
-        self.password.setStyleSheet("border :0px ;")
+        self.password.setStyleSheet("border :0px; font-weight: bold")
         layout.addWidget(self.password, 1, 0)
 
         self.password_input = QLineEdit(echoMode=QLineEdit.EchoMode.Password)
@@ -64,7 +66,7 @@ class MainWindow(QWidget):
 
 
         # Rejestracja
-        self.username = QLabel('Nie posiadasz konta? Załóż je w prosty sposób!')
+        self.username = QLabel('<center>Nie posiadasz konta? Załóż je w prosty sposób!')
         self.username.setFont(QFont('Boulder', 10))
         self.username.setStyleSheet("border :0px ;")
         layout.addWidget(self.username, 4, 0, 1, 0, Qt.AlignBottom)
@@ -77,12 +79,24 @@ class MainWindow(QWidget):
 
         self.show()
 
-    def login_to_account(self, creds):
-        print(self.username_input.text())
+    def login_to_account(self):
+
         db_ops = DatabaseOperations()
-        query = '''SELECT * FROM users WHERE credentials = %s''', (psycopg2.Binary(creds),)
-        result = db_ops.execute_queries(query)
-        return result is not None
+
+        query = '''SELECT * FROM users WHERE login = %s'''
+        try:
+            result = db_ops.execute_queries(query, (self.username_input.text(),))
+            password_result = is_correct_password(salt=eval(result[2]), pw_hash=eval(result[3]), password=self.password_input.text())
+            if password_result == False:
+                QMessageBox.about(self, "Błąd logowania", "<b><p align='center'>Hasło niepoprawne!<br>")
+            else:
+                QMessageBox.about(self, "Sukces", "<b><p align='center'>Logowanie pomyslne!<br>")
+                #TODO check if user is admin/customer and open proper window with features for specific group
+        except:
+            QMessageBox.about(self, "Błąd logowania", "<b><p align='center'>Login niepoprawny!<br>")
+
+    def remind_password(self):
+        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -2,13 +2,8 @@
 import psycopg2
 import os
 from DB.config import config
-from cryptography.fernet import Fernet
+from encrypting import hash_new_password
 
-def encrypt(message: bytes, key: bytes):
-    return Fernet(key).encrypt(message)
-
-def decrypt(token: bytes, key: bytes):
-    return Fernet(key).decrypt(token)
 
 class DatabaseOperations:
     def __init__(self):
@@ -20,6 +15,7 @@ class DatabaseOperations:
         self.conn = psycopg2.connect(**params)
 
     def execute_queries(self, query, values = None):
+
         cur = self.conn.cursor()
         if values == None:
             cur.execute(query)
@@ -27,7 +23,8 @@ class DatabaseOperations:
             cur.execute(query, values)
 
         try:
-            return cur.fetchone()
+            result = cur.fetchone()
+            return result
         except:
             pass
 
@@ -50,15 +47,37 @@ def insert_data(table, columns):
 
     return query
 
-key = Fernet.generate_key()
+def insert_new_user_credentials():
+    #TODO JUST A SAMPLE, DO NOT USE FURTHER
+    # create class instance
+    db_ops = DatabaseOperations()
+
+    data = [
+        {
+        'login': 'mateo',
+        'password': hash_new_password('eloelo')
+        }
+         ]
+
+    for i in data:
+        db_ops.execute_queries(insert_data('USERS', ['LOGIN', 'CREDENTIALS_V1', 'CREDENTIALS_V2']),(i['login'],str(i['password'][0]),str(i['password'][1])))
+
+    # commit changes and close conn
+    db_ops.commit_changes()
+
 if __name__ == '__main__':
     # create class instance
     db_ops = DatabaseOperations()
 
-    data = [(encrypt('login haslo2'.encode(), key))]
+    data = [
+        {
+        'login': 'mateo',
+        'password': hash_new_password('eloelo')
+        }
+         ]
+
     for i in data:
-        print(i)
-        db_ops.execute_queries(insert_data('USERS', ['CREDENTIALS']), (psycopg2.Binary(i),))
+        db_ops.execute_queries(insert_data('USERS', ['LOGIN', 'CREDENTIALS_V1', 'CREDENTIALS_V2']),(i['login'],str(i['password'][0]),str(i['password'][1])))
 
     # commit changes and close conn
     db_ops.commit_changes()
